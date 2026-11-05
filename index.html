@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#01286e">
+  <title>UNIAJSmaps</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="ChatGPT Image 23 sept 2026, 11_28_50.png">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css">
+
+  <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="encabezado">
+    <img class="logo-uniajs" src="uniajs.png" alt="Logo de UNIAJS">
+    <button class="boton-perfil" type="button" aria-label="Perfil del estudiante">
+      <img src="logo_usuario_maps.jpg" alt="Perfil del estudiante">
+    </button>
+  </header>
+
+  <nav class="navegacion" aria-label="Navegación principal">
+    <ul>
+      <li class="tab activa"><a href="#inicio" aria-current="page">Inicio</a></li>
+      <li class="tab"><a href="#mapa-principal">Mapa</a></li>
+      <li class="tab" id="nave"><a href="#panel-busqueda-filtrada">Búsqueda filtrada</a></li>
+      <li class="tab"><a href="#fondoCatalogo" id="btnCatalogo">Catálogo</a></li>
+      <li class="tab"><a href="#noticias">Noticias</a></li>
+      <li class="tab"><a href="#servicios">Servicios</a></li>
+      <li class="tab tab-configuracion">
+    <button type="button" aria-label="Configuración">
+        <img src="Captura de pantalla 2026-09-22 105802.png" alt="" width="20">
+    </button>
+</li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="inicio" class="seccion-contenido activa">
+      <section class="banner">
+        <img src="Plantilla  uniajs.png" alt="Mapa de Sincelejo con sedes UNIAJS">
+        <h1 id="texto-banner">Explora el mapa de UNIAJS y ubica nuestras sedes, servicios y espacios de atención en Sincelejo.</h1>
+        <div class="descubre">Descubre</div>
+      </section>
+
+      <section class="accesos-rapidos" aria-label="Accesos rápidos">
+        <div class="contenedor-button">
+          <button type="button" data-abrir-catalogo aria-label="Consultar aulas">
+            <img src="Captura de pantalla 2026-09-22 141815.png" alt="Aulas">
+          </button>
+          <button type="button" data-abrir-catalogo aria-label="Consultar restaurantes">
+            <img src="Captura de pantalla 2026-09-22 142735.png" alt="Restaurantes">
+          </button>
+          <button type="button" data-abrir-catalogo aria-label="Consultar sedes">
+            <img src="Captura de pantalla 2026-09-22 141755.png" alt="Sedes">
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <section id="mapa-principal" class="seccion-mapa" aria-label="Mapa de UNIAJS">
+      <h2>Encuéntranos en el mapa</h2>
+      <div class="contenedor-mapa">
+        <div id="mapa" role="application" aria-label="Mapa interactivo de UNIAJS Maps"></div>
+      </div>
+    </section>
+
+    <section id="panel-busqueda-filtrada" class="seccion-contenido panel-busqueda" aria-label="Búsqueda filtrada">
+      <div class="ventana-busqueda">
+        <button class="cerrar-panel" id="cerrarBusqueda" type="button" aria-label="Cerrar búsqueda">✕</button>
+        <h2>Consulta tu sede aquí</h2>
+        <form id="formBusqueda">
+          <fieldset>
+            <label for="sede">Elija la sede o lugar</label>
+            <select name="sede" id="sede" required>
+              <option value="">Seleccione una sede</option>
+              <option value="sedeA">Sede A</option>
+              <option value="sedeB">Sede B</option>
+              <option value="sedeC">Sede C</option>
+              <option value="sedeE">Sede E</option>
+              <option value="consultorio">Consultorio Jurídico</option>
+              <option value="clinica">Clínica</option>
+              <option value="restaurante">Restaurante</option>
+            </select>
+          </fieldset>
+          <fieldset>
+            <label for="aula">Elija el aula o servicio</label>
+            <select name="aula" id="aula" disabled>
+              <option value="">Primero elija una sede</option>
+            </select>
+          </fieldset>
+          <button type="submit" id="btnBuscar">Buscar</button>
+          <p id="mensajeBusqueda" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <div id="fondoCatalogo" class="fondo-catalogo" aria-hidden="true">
+      <section class="ventana-catalogo" role="dialog" aria-modal="true" aria-label="Catálogo de sedes y servicios">
+        <div class="pestanas">
+          <button type="button" data-sede="A">SEDE A</button>
+          <button type="button" data-sede="B">SEDE B</button>
+          <button type="button" data-sede="C">SEDE C</button>
+          <button type="button" data-sede="E">SEDE E</button>
+          <button type="button" data-sede="consultorio">CONSULTORIO JURÍDICO</button>
+          <button type="button" data-sede="clinica">CLÍNICA</button>
+          <button type="button" data-sede="restaurante">RESTAURANTE</button>
+          <button type="button" id="cerrarCatalogo" class="cerrar" aria-label="Cerrar catálogo">✕</button>
+        </div>
+        <div class="contenido-catalogo">
+          <div class="informacion-sede">
+            <img id="fotoSede" src="imagenes/sede-c.jpg" alt="Fotografía de la sede">
+            <div class="direccion-sede">
+              <h3 id="nombreSede">SEDE C</h3>
+              <p id="direccionSede">Dirección de la sede</p>
+            </div>
+          </div>
+          <div class="panel-aulas">
+            <h2 id="tituloAulas">AULAS</h2>
+            <div id="listaAulas" class="lista-aulas"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section id="noticias" class="seccion-contenido seccion-placeholder">
+      <h2>Noticias</h2>
+      <p>Esta sección se encuentra en desarrollo.</p>
+    </section>
+    <section id="servicios" class="seccion-contenido seccion-placeholder">
+      <h2>Servicios</h2>
+      <p>Esta sección se encuentra en desarrollo.</p>
+    </section>
+  </main>
+
+  <footer>
+    <section>
+      <h2>Encuentra tu destino en</h2>
+      <img src="imagenes/logo.png" alt="UNIAJS Maps">
+      <br>
+      <img src="imagenes/pin.png" alt="Ubicación" width="30">
+    </section>
+    <p>Corporación Universitaria Antonio José de Sucre (UNIAJS) | Vigilada Mineducación.</p>
+    <p>Resolución Personería jurídica No. 2302 de 2003 (30 de Sep. 2003), Código SNIES 2850.</p>
+  </footer>
+</body>
+</html>
